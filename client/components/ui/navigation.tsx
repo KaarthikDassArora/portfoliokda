@@ -43,7 +43,7 @@ export function Navigation() {
         className={cn(
           "fixed top-0 left-0 right-0 z-50 transition-all duration-300",
           scrolled
-            ? "bg-background/80 backdrop-blur-md border-b border-neon-cyan/20"
+            ? "bg-background/80 backdrop-blur-md border-b border-accent-purple/20"
             : "bg-transparent",
         )}
       >
@@ -52,9 +52,9 @@ export function Navigation() {
             {/* Logo */}
             <Link
               to="/"
-              className="text-2xl font-bold text-neon-cyan hover:text-neon-pink transition-colors duration-300"
+              className="text-2xl font-bold gradient-text hover:scale-110 transition-all duration-300"
             >
-              <span className="neon-glow">KD</span>
+              KD
             </Link>
 
             {/* Desktop Menu */}
@@ -68,10 +68,10 @@ export function Navigation() {
                     key={item.name}
                     to={item.href}
                     className={cn(
-                      "flex items-center space-x-2 px-3 py-2 rounded-md text-sm font-medium transition-all duration-300",
+                      "flex items-center space-x-2 px-4 py-2 rounded-xl text-sm font-medium transition-all duration-300",
                       isActive
-                        ? "text-neon-cyan neon-glow bg-neon-cyan/10 border border-neon-cyan/30"
-                        : "text-foreground/80 hover:text-neon-pink hover:bg-neon-pink/10",
+                        ? "text-accent-purple bg-accent-purple/10 border border-accent-purple/30"
+                        : "text-foreground/80 hover:text-accent-pink hover:bg-accent-pink/10 hover:scale-105",
                     )}
                   >
                     <Icon size={16} />
@@ -85,7 +85,7 @@ export function Navigation() {
             <div className="md:hidden">
               <button
                 onClick={() => setIsOpen(!isOpen)}
-                className="p-2 rounded-md text-foreground hover:text-neon-cyan transition-colors duration-300"
+                className="p-2 rounded-md text-foreground hover:text-accent-purple transition-colors duration-300"
               >
                 {isOpen ? <X size={24} /> : <Menu size={24} />}
               </button>
@@ -102,7 +102,7 @@ export function Navigation() {
               : "max-h-0 opacity-0 overflow-hidden",
           )}
         >
-          <div className="px-2 pt-2 pb-3 space-y-1 bg-background/95 backdrop-blur-md border-b border-neon-cyan/20">
+          <div className="px-2 pt-2 pb-3 space-y-1 bg-background/95 backdrop-blur-md border-b border-accent-purple/20">
             {navItems.map((item) => {
               const Icon = item.icon;
               const isActive = location.pathname === item.href;
@@ -113,10 +113,10 @@ export function Navigation() {
                   to={item.href}
                   onClick={() => setIsOpen(false)}
                   className={cn(
-                    "flex items-center space-x-3 px-3 py-2 rounded-md text-base font-medium transition-all duration-300",
+                    "flex items-center space-x-3 px-4 py-3 rounded-xl text-base font-medium transition-all duration-300",
                     isActive
-                      ? "text-neon-cyan neon-glow bg-neon-cyan/10 border border-neon-cyan/30"
-                      : "text-foreground/80 hover:text-neon-pink hover:bg-neon-pink/10",
+                      ? "text-accent-purple bg-accent-purple/10 border border-accent-purple/30"
+                      : "text-foreground/80 hover:text-accent-pink hover:bg-accent-pink/10",
                   )}
                 >
                   <Icon size={20} />
