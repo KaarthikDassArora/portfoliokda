@@ -54,7 +54,7 @@ export function Navigation() {
               to="/"
               className="text-2xl font-bold gradient-text hover:scale-110 transition-all duration-300"
             >
-              KD
+              KDA
             </Link>
 
             {/* Desktop Menu */}

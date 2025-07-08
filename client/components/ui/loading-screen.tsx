@@ -124,7 +124,7 @@ export function LoadingScreen({ onComplete }: LoadingScreenProps) {
           <div className="w-20 h-20 mx-auto relative">
             <div className="absolute inset-0 bg-gradient-to-r from-gradient-start via-gradient-middle to-gradient-end rounded-2xl pulse-glow" />
             <div className="absolute inset-1 bg-background rounded-xl flex items-center justify-center">
-              <span className="text-2xl font-bold gradient-text">KD</span>
+              <span className="text-2xl font-bold gradient-text">KDA</span>
             </div>
           </div>
         </div>
