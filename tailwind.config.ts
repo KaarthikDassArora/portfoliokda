@@ -57,12 +57,21 @@ export default {
           border: "hsl(var(--sidebar-border))",
           ring: "hsl(var(--sidebar-ring))",
         },
-        // Cyberpunk theme colors
-        "neon-cyan": "hsl(var(--neon-cyan))",
-        "neon-pink": "hsl(var(--neon-pink))",
-        "neon-purple": "hsl(var(--neon-purple))",
-        "electric-blue": "hsl(var(--electric-blue))",
-        grid: "hsl(var(--grid-color))",
+        // Modern gradient colors
+        "gradient-start": "hsl(var(--gradient-start))",
+        "gradient-middle": "hsl(var(--gradient-middle))",
+        "gradient-end": "hsl(var(--gradient-end))",
+
+        // Accent colors
+        "accent-blue": "hsl(var(--accent-blue))",
+        "accent-purple": "hsl(var(--accent-purple))",
+        "accent-pink": "hsl(var(--accent-pink))",
+        "accent-orange": "hsl(var(--accent-orange))",
+
+        // Surface colors
+        surface: "hsl(var(--surface))",
+        "surface-light": "hsl(var(--surface-light))",
+        "surface-lighter": "hsl(var(--surface-lighter))",
       },
       borderRadius: {
         lg: "var(--radius)",
