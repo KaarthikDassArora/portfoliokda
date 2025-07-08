@@ -235,9 +235,9 @@ export default function Index() {
             <div className="relative">
               <div className="w-80 h-80 lg:w-96 lg:h-96 rounded-3xl overflow-hidden border-4 border-gradient-to-r from-gradient-start to-gradient-end shadow-2xl">
                 <img
-                  src="https://images.pexels.com/photos/14189629/pexels-photo-14189629.jpeg"
+                  src="https://cdn.builder.io/api/v1/image/assets%2F01d7d241c1954334a3f0d0e345e8ae28%2F2358ed438af1495ab12823ffe0eb3114?format=webp&width=800"
                   alt="Kaarthik Dass Arora"
-                  className="w-full h-full object-cover grayscale hover:grayscale-0 transition-all duration-500"
+                  className="w-full h-full object-cover hover:scale-110 transition-all duration-500"
                 />
               </div>
               {/* Floating elements around image */}
