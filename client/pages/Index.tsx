@@ -1,4 +1,4 @@
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Link } from "react-router-dom";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
@@ -12,227 +12,369 @@ import {
   Code,
   Brain,
   Palette,
+  ArrowRight,
+  Sparkles,
+  Zap,
 } from "lucide-react";
 import { Navigation } from "@/components/ui/navigation";
+import { LoadingScreen } from "@/components/ui/loading-screen";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
-import {
-  animateHeroText,
-  animateStagger,
-  addFloatingAnimation,
-  addGlitchEffect,
-} from "@/components/animations/gsap-utils";
 
 gsap.registerPlugin(ScrollTrigger);
 
 export default function Index() {
+  const [isLoading, setIsLoading] = useState(true);
   const heroRef = useRef<HTMLDivElement>(null);
   const nameRef = useRef<HTMLHeadingElement>(null);
   const titleRef = useRef<HTMLParagraphElement>(null);
+  const taglineRef = useRef<HTMLParagraphElement>(null);
+  const introRef = useRef<HTMLDivElement>(null);
   const ctaRef = useRef<HTMLDivElement>(null);
   const scrollIndicatorRef = useRef<HTMLDivElement>(null);
 
-  useEffect(() => {
-    // Hero entrance animation
-    const tl = gsap.timeline({ delay: 0.5 });
+  const handleLoadingComplete = () => {
+    setIsLoading(false);
+    startHeroAnimations();
+  };
 
-    // Animate background grid
+  const startHeroAnimations = () => {
+    const tl = gsap.timeline({ delay: 0.3 });
+
+    // Background elements entrance
     tl.fromTo(
-      ".cyber-grid",
-      { opacity: 0 },
-      { opacity: 1, duration: 1, ease: "power2.out" },
+      ".bg-orb",
+      { scale: 0, opacity: 0 },
+      {
+        scale: 1,
+        opacity: 1,
+        duration: 1.5,
+        ease: "back.out(1.7)",
+        stagger: 0.2,
+      },
     );
 
-    // Animate hero content
-    if (nameRef.current && titleRef.current && ctaRef.current) {
-      tl.fromTo(
-        nameRef.current,
+    // Hero content entrance with stagger
+    tl.fromTo(
+      nameRef.current,
+      {
+        opacity: 0,
+        y: 100,
+        scale: 0.8,
+      },
+      {
+        opacity: 1,
+        y: 0,
+        scale: 1,
+        duration: 1.2,
+        ease: "back.out(1.7)",
+      },
+      "-=1.2",
+    )
+      .fromTo(
+        titleRef.current,
         {
           opacity: 0,
-          y: 100,
-          scale: 0.8,
+          y: 50,
+        },
+        {
+          opacity: 1,
+          y: 0,
+          duration: 0.8,
+          ease: "power2.out",
+        },
+        "-=0.6",
+      )
+      .fromTo(
+        taglineRef.current,
+        {
+          opacity: 0,
+          y: 30,
+        },
+        {
+          opacity: 1,
+          y: 0,
+          duration: 0.6,
+          ease: "power2.out",
+        },
+        "-=0.4",
+      )
+      .fromTo(
+        introRef.current,
+        {
+          opacity: 0,
+          y: 30,
+        },
+        {
+          opacity: 1,
+          y: 0,
+          duration: 0.8,
+          ease: "power2.out",
+        },
+        "-=0.3",
+      )
+      .fromTo(
+        ctaRef.current?.children,
+        {
+          opacity: 0,
+          y: 40,
+          scale: 0.9,
         },
         {
           opacity: 1,
           y: 0,
           scale: 1,
-          duration: 1.2,
+          duration: 0.6,
           ease: "back.out(1.7)",
+          stagger: 0.1,
         },
-      )
-        .fromTo(
-          titleRef.current,
-          {
-            opacity: 0,
-            y: 50,
-          },
-          {
-            opacity: 1,
-            y: 0,
-            duration: 0.8,
-            ease: "power2.out",
-          },
-          "-=0.6",
-        )
-        .fromTo(
-          ctaRef.current.children,
-          {
-            opacity: 0,
-            y: 30,
-            scale: 0.9,
-          },
-          {
-            opacity: 1,
-            y: 0,
-            scale: 1,
-            duration: 0.6,
-            ease: "power2.out",
-            stagger: 0.1,
-          },
-          "-=0.4",
-        );
-    }
+        "-=0.4",
+      );
 
-    // Floating animation for scroll indicator
+    // Scroll indicator animation
     if (scrollIndicatorRef.current) {
-      addFloatingAnimation(scrollIndicatorRef.current);
+      tl.fromTo(
+        scrollIndicatorRef.current,
+        { opacity: 0, y: 20 },
+        { opacity: 1, y: 0, duration: 0.5 },
+        "-=0.2",
+      );
     }
 
-    // Glitch effect for name
-    if (nameRef.current) {
-      setTimeout(() => {
-        addGlitchEffect(nameRef.current!);
-      }, 3000);
-    }
-
-    // Social links animation
-    gsap.fromTo(
+    // Social links entrance
+    tl.fromTo(
       ".social-link",
       {
         opacity: 0,
-        x: -50,
+        x: -30,
+        scale: 0.8,
       },
       {
         opacity: 1,
         x: 0,
-        duration: 0.6,
-        ease: "power2.out",
+        scale: 1,
+        duration: 0.5,
+        ease: "back.out(1.7)",
         stagger: 0.1,
-        delay: 2,
       },
+      "-=0.3",
     );
 
-    // Parallax effect for background elements
-    gsap.to(".bg-element", {
-      yPercent: -30,
-      ease: "none",
-      scrollTrigger: {
-        trigger: heroRef.current,
-        start: "top bottom",
-        end: "bottom top",
-        scrub: true,
+    // Floating icons
+    tl.fromTo(
+      ".floating-icon",
+      {
+        opacity: 0,
+        scale: 0,
+        rotation: -45,
       },
-    });
-  }, []);
+      {
+        opacity: 1,
+        scale: 1,
+        rotation: 0,
+        duration: 0.8,
+        ease: "back.out(1.7)",
+        stagger: 0.2,
+      },
+      "-=0.5",
+    );
+  };
+
+  useEffect(() => {
+    if (!isLoading) {
+      // Parallax effects
+      gsap.to(".bg-orb", {
+        yPercent: -30,
+        ease: "none",
+        scrollTrigger: {
+          trigger: heroRef.current,
+          start: "top bottom",
+          end: "bottom top",
+          scrub: true,
+        },
+      });
+
+      // Floating animations
+      gsap.to(".floating-icon", {
+        y: -10,
+        rotation: 5,
+        duration: 3,
+        ease: "sine.inOut",
+        yoyo: true,
+        repeat: -1,
+        stagger: 0.5,
+      });
+
+      // Text reveal on scroll for sections
+      gsap.fromTo(
+        ".reveal-section",
+        {
+          opacity: 0,
+          y: 60,
+        },
+        {
+          opacity: 1,
+          y: 0,
+          duration: 1,
+          ease: "power2.out",
+          scrollTrigger: {
+            trigger: ".reveal-section",
+            start: "top 80%",
+            toggleActions: "play none none reverse",
+          },
+        },
+      );
+    }
+  }, [isLoading]);
 
   const handleDownloadResume = () => {
-    // Create a temporary link to download resume
     const link = document.createElement("a");
-    link.href = "/resume.pdf"; // You'll need to add this file to public folder
+    link.href = "/resume.pdf";
     link.download = "Kaarthik_Dass_Arora_Resume.pdf";
     link.click();
   };
+
+  if (isLoading) {
+    return <LoadingScreen onComplete={handleLoadingComplete} />;
+  }
 
   return (
     <div className="min-h-screen bg-background relative overflow-hidden">
       <Navigation />
 
-      {/* Background Grid */}
-      <div className="cyber-grid fixed inset-0 opacity-20" />
-
       {/* Background Elements */}
-      <div className="bg-element absolute top-20 left-10 w-64 h-64 bg-neon-cyan/5 rounded-full blur-3xl" />
-      <div className="bg-element absolute bottom-20 right-10 w-96 h-96 bg-neon-pink/5 rounded-full blur-3xl" />
-      <div className="bg-element absolute top-1/2 left-1/2 w-80 h-80 bg-neon-purple/5 rounded-full blur-3xl" />
+      <div className="fixed inset-0 modern-grid opacity-20" />
+      <div className="fixed inset-0 gradient-mesh" />
+
+      {/* Floating Background Orbs */}
+      <div className="bg-orb fixed top-20 left-10 w-72 h-72 bg-accent-purple/10 rounded-full blur-3xl" />
+      <div className="bg-orb fixed bottom-20 right-10 w-96 h-96 bg-accent-pink/10 rounded-full blur-3xl" />
+      <div className="bg-orb fixed top-1/2 left-1/2 w-80 h-80 bg-accent-blue/10 rounded-full blur-3xl transform -translate-x-1/2 -translate-y-1/2" />
 
       {/* Hero Section */}
       <section
         ref={heroRef}
-        className="relative min-h-screen flex items-center justify-center px-4"
+        className="relative min-h-screen flex items-center justify-center px-4 py-20"
       >
-        <div className="max-w-4xl mx-auto text-center space-y-8">
-          {/* Name */}
+        <div className="max-w-6xl mx-auto text-center space-y-8">
+          {/* Floating Icons */}
+          <div className="floating-icon absolute top-20 left-20 text-accent-purple/60">
+            <Code size={40} />
+          </div>
+          <div className="floating-icon absolute bottom-40 right-20 text-accent-pink/60">
+            <Brain size={40} />
+          </div>
+          <div className="floating-icon absolute top-40 right-40 text-accent-blue/60">
+            <Palette size={40} />
+          </div>
+          <div className="floating-icon absolute bottom-20 left-40 text-accent-orange/60">
+            <Sparkles size={40} />
+          </div>
+          <div className="floating-icon absolute top-60 left-60 text-gradient-middle/60">
+            <Zap size={40} />
+          </div>
+
+          {/* Main Name */}
           <h1
             ref={nameRef}
-            className="text-5xl md:text-7xl lg:text-8xl font-bold"
+            className="text-6xl md:text-7xl lg:text-8xl xl:text-9xl font-bold leading-tight"
           >
-            <span className="text-neon-cyan neon-glow">Kaarthik</span>{" "}
-            <span className="text-neon-pink neon-glow">Dass</span>{" "}
-            <span className="text-neon-purple neon-glow">Arora</span>
+            <span className="gradient-text">Kaarthik Dass Arora</span>
           </h1>
 
-          {/* Title */}
+          {/* Subtitle */}
           <div ref={titleRef} className="space-y-4">
-            <p className="text-xl md:text-2xl lg:text-3xl text-foreground/90 font-light">
+            <p className="text-2xl md:text-3xl lg:text-4xl text-foreground/90 font-light">
               Aspiring{" "}
-              <span className="text-electric-blue font-semibold">
+              <span className="text-accent-blue font-semibold text-glow">
                 AI Engineer
               </span>{" "}
               |{" "}
-              <span className="text-neon-cyan font-semibold">
+              <span className="text-accent-purple font-semibold text-glow">
                 Full Stack Developer
               </span>{" "}
               |{" "}
-              <span className="text-neon-pink font-semibold">
+              <span className="text-accent-pink font-semibold text-glow">
                 Design Enthusiast
               </span>
             </p>
-            <p className="text-lg text-foreground/70">
-              From Ludhiana, India 🇮🇳 | B.Tech CSE (AI & ML) | Gulzar Group of
-              Institutes
-            </p>
           </div>
 
-          {/* Floating Icons */}
-          <div className="absolute top-20 left-20 text-neon-cyan opacity-30">
-            <Code size={40} className="float" />
-          </div>
-          <div className="absolute bottom-40 right-20 text-neon-pink opacity-30">
-            <Brain
-              size={40}
-              className="float"
-              style={{ animationDelay: "1s" }}
-            />
-          </div>
-          <div className="absolute top-40 right-40 text-neon-purple opacity-30">
-            <Palette
-              size={40}
-              className="float"
-              style={{ animationDelay: "2s" }}
-            />
+          {/* Tagline */}
+          <p
+            ref={taglineRef}
+            className="text-xl md:text-2xl text-foreground/80 font-light max-w-4xl mx-auto"
+          >
+            Crafting intelligent solutions, pixel-perfect interfaces, and
+            real-world impact through code.
+          </p>
+
+          {/* Introduction */}
+          <div ref={introRef} className="max-w-5xl mx-auto space-y-6">
+            <p className="text-lg md:text-xl text-foreground/70 leading-relaxed">
+              I'm a passionate and driven developer from{" "}
+              <span className="text-accent-purple font-medium">
+                Ludhiana 🇮🇳
+              </span>
+              , currently pursuing{" "}
+              <span className="text-accent-blue font-medium">
+                B.Tech in CSE (AI & ML)
+              </span>
+              . With a deep love for clean code, smart design, and real-world
+              automation, I build projects that blend innovation and
+              accessibility.
+            </p>
+            <p className="text-lg md:text-xl text-foreground/70 leading-relaxed">
+              Whether it's full-stack apps, intelligent assistants, or tools for
+              the visually impaired — my mission is clear:{" "}
+              <span className="gradient-text font-semibold">
+                Code with purpose. Create with impact.
+              </span>
+            </p>
           </div>
 
           {/* CTA Buttons */}
           <div
             ref={ctaRef}
-            className="flex flex-col sm:flex-row gap-4 justify-center items-center"
+            className="flex flex-col lg:flex-row gap-6 justify-center items-center pt-8"
           >
-            <Button
-              onClick={handleDownloadResume}
-              className="bg-neon-cyan text-background hover:bg-neon-cyan/90 px-8 py-6 text-lg font-semibold neon-border transition-all duration-300 hover:scale-105"
-            >
-              <Download size={20} className="mr-2" />
-              Download Resume
-            </Button>
+            <Link to="/projects">
+              <Button
+                size="lg"
+                className="bg-gradient-to-r from-gradient-start to-gradient-middle hover:from-gradient-middle hover:to-gradient-end text-white px-8 py-4 text-lg font-semibold rounded-xl transition-all duration-300 hover:scale-105 hover:shadow-xl group"
+              >
+                <ArrowRight
+                  size={20}
+                  className="mr-2 group-hover:translate-x-1 transition-transform"
+                />
+                Explore My Work
+              </Button>
+            </Link>
             <Link to="/contact">
               <Button
                 variant="outline"
-                className="border-neon-pink text-neon-pink hover:bg-neon-pink/10 px-8 py-6 text-lg font-semibold neon-border transition-all duration-300 hover:scale-105"
+                size="lg"
+                className="border-2 border-accent-purple text-accent-purple hover:bg-accent-purple/10 px-8 py-4 text-lg font-semibold rounded-xl transition-all duration-300 hover:scale-105 group"
               >
-                <Mail size={20} className="mr-2" />
-                Contact Me
+                <Mail
+                  size={20}
+                  className="mr-2 group-hover:rotate-12 transition-transform"
+                />
+                Let's Collaborate
               </Button>
             </Link>
+            <Button
+              onClick={handleDownloadResume}
+              variant="ghost"
+              size="lg"
+              className="text-foreground/70 hover:text-accent-pink px-8 py-4 text-lg font-semibold rounded-xl transition-all duration-300 hover:scale-105 group"
+            >
+              <Download
+                size={20}
+                className="mr-2 group-hover:translate-y-1 transition-transform"
+              />
+              Download Resume
+            </Button>
           </div>
 
           {/* Social Links */}
@@ -241,25 +383,25 @@ export default function Index() {
               href="https://github.com/kaarthikdass"
               target="_blank"
               rel="noopener noreferrer"
-              className="social-link text-foreground/60 hover:text-neon-cyan transition-all duration-300 hover:scale-110"
+              className="social-link text-foreground/60 hover:text-accent-purple transition-all duration-300 hover:scale-110 hover:-translate-y-1"
             >
-              <Github size={24} />
+              <Github size={28} />
             </a>
             <a
               href="https://linkedin.com/in/kaarthikdass"
               target="_blank"
               rel="noopener noreferrer"
-              className="social-link text-foreground/60 hover:text-electric-blue transition-all duration-300 hover:scale-110"
+              className="social-link text-foreground/60 hover:text-accent-blue transition-all duration-300 hover:scale-110 hover:-translate-y-1"
             >
-              <Linkedin size={24} />
+              <Linkedin size={28} />
             </a>
             <a
               href="https://instagram.com/kaarthikdass"
               target="_blank"
               rel="noopener noreferrer"
-              className="social-link text-foreground/60 hover:text-neon-pink transition-all duration-300 hover:scale-110"
+              className="social-link text-foreground/60 hover:text-accent-pink transition-all duration-300 hover:scale-110 hover:-translate-y-1"
             >
-              <Instagram size={24} />
+              <Instagram size={28} />
             </a>
           </div>
         </div>
@@ -267,52 +409,91 @@ export default function Index() {
         {/* Scroll Indicator */}
         <div
           ref={scrollIndicatorRef}
-          className="absolute bottom-8 left-1/2 transform -translate-x-1/2 text-foreground/60 cursor-pointer"
+          className="absolute bottom-8 left-1/2 transform -translate-x-1/2 text-foreground/60 cursor-pointer group"
+          onClick={() => {
+            const nextSection = document.querySelector(".reveal-section");
+            nextSection?.scrollIntoView({ behavior: "smooth" });
+          }}
         >
           <div className="flex flex-col items-center space-y-2">
-            <span className="text-sm">Scroll to explore</span>
-            <ChevronDown size={24} className="animate-bounce" />
+            <span className="text-sm group-hover:text-accent-purple transition-colors">
+              Scroll to explore
+            </span>
+            <ChevronDown
+              size={24}
+              className="animate-bounce group-hover:text-accent-purple transition-colors"
+            />
           </div>
         </div>
       </section>
 
-      {/* Quick Preview Section */}
-      <section className="py-20 px-4">
-        <div className="max-w-6xl mx-auto">
-          <div className="grid md:grid-cols-3 gap-8 text-center">
-            <div className="bg-card/50 backdrop-blur-sm border border-neon-cyan/30 rounded-lg p-8 hover:bg-card/70 transition-all duration-300 hover:scale-105">
-              <Code size={48} className="mx-auto mb-4 text-neon-cyan" />
-              <h3 className="text-xl font-semibold mb-2 text-neon-cyan">
-                Full Stack Development
+      {/* Philosophy Section */}
+      <section className="reveal-section py-32 px-4">
+        <div className="max-w-6xl mx-auto text-center space-y-16">
+          <h2 className="text-4xl md:text-5xl font-bold gradient-text">
+            My Philosophy
+          </h2>
+          <div className="grid md:grid-cols-3 gap-8">
+            <div className="glass rounded-2xl p-8 hover:scale-105 transition-all duration-300 group">
+              <div className="w-16 h-16 mx-auto mb-6 bg-gradient-to-r from-accent-purple to-accent-pink rounded-2xl flex items-center justify-center group-hover:rotate-12 transition-transform">
+                <Code size={32} className="text-white" />
+              </div>
+              <h3 className="text-xl font-semibold mb-4 text-accent-purple">
+                Code is my canvas
               </h3>
               <p className="text-foreground/70">
-                Building end-to-end applications with modern technologies
+                Every line of code is a brushstroke in the masterpiece of
+                innovation.
               </p>
             </div>
-            <div className="bg-card/50 backdrop-blur-sm border border-neon-pink/30 rounded-lg p-8 hover:bg-card/70 transition-all duration-300 hover:scale-105">
-              <Brain size={48} className="mx-auto mb-4 text-neon-pink" />
-              <h3 className="text-xl font-semibold mb-2 text-neon-pink">
-                AI & Machine Learning
+            <div className="glass rounded-2xl p-8 hover:scale-105 transition-all duration-300 group">
+              <div className="w-16 h-16 mx-auto mb-6 bg-gradient-to-r from-accent-blue to-accent-purple rounded-2xl flex items-center justify-center group-hover:rotate-12 transition-transform">
+                <Brain size={32} className="text-white" />
+              </div>
+              <h3 className="text-xl font-semibold mb-4 text-accent-blue">
+                AI is my brush
               </h3>
               <p className="text-foreground/70">
-                Exploring the frontiers of artificial intelligence
+                Artificial intelligence amplifies human creativity and solves
+                complex problems.
               </p>
             </div>
-            <div className="bg-card/50 backdrop-blur-sm border border-neon-purple/30 rounded-lg p-8 hover:bg-card/70 transition-all duration-300 hover:scale-105">
-              <Palette size={48} className="mx-auto mb-4 text-neon-purple" />
-              <h3 className="text-xl font-semibold mb-2 text-neon-purple">
-                Design & Innovation
+            <div className="glass rounded-2xl p-8 hover:scale-105 transition-all duration-300 group">
+              <div className="w-16 h-16 mx-auto mb-6 bg-gradient-to-r from-accent-pink to-accent-orange rounded-2xl flex items-center justify-center group-hover:rotate-12 transition-transform">
+                <Palette size={32} className="text-white" />
+              </div>
+              <h3 className="text-xl font-semibold mb-4 text-accent-pink">
+                Design is my vision
               </h3>
               <p className="text-foreground/70">
-                Creating beautiful and user-centric experiences
+                Beautiful interfaces and intuitive experiences make technology
+                accessible to everyone.
               </p>
             </div>
           </div>
         </div>
       </section>
 
-      {/* Page Transition Overlay */}
-      <div className="page-transition fixed inset-0 bg-neon-cyan z-50 origin-left scale-x-0" />
+      {/* Inspirational Quotes */}
+      <section className="reveal-section py-32 px-4 bg-surface/30">
+        <div className="max-w-4xl mx-auto space-y-16">
+          {[
+            "Building a smarter world, one line at a time.",
+            "Designed to disrupt. Engineered to empower.",
+            "Accessibility isn't a feature — it's a foundation.",
+            "Innovation starts where convention ends.",
+          ].map((quote, index) => (
+            <div
+              key={index}
+              className="text-center py-8 glass rounded-2xl hover:scale-105 transition-all duration-300"
+            >
+              <p className="text-2xl md:text-3xl font-light gradient-text">
+                "{quote}"
+              </p>
+            </div>
+          ))}
+        </div>
+      </section>
     </div>
   );
 }
