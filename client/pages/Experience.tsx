@@ -2,6 +2,7 @@ import { useEffect, useRef } from "react";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { Navigation } from "@/components/ui/navigation";
+import { Footer } from "@/components/ui/footer";
 import {
   Briefcase,
   Calendar,
@@ -80,28 +81,7 @@ export default function Experience() {
       ],
       color: "accent-purple",
     },
-    {
-      title: "Co-owner & CTO",
-      company: "Chitrakala Studios",
-      period: "2023 - Present",
-      location: "Ludhiana, India",
-      type: "Leadership",
-      description:
-        "Co-founded a multimedia production studio focusing on digital content creation, video production, and creative services. Leading the technical vision and digital strategy.",
-      achievements: [
-        "Co-founded multimedia production company",
-        "Developed technical infrastructure and workflows",
-        "Led digital transformation initiatives",
-        "Established partnerships with content creators and brands",
-      ],
-      technologies: [
-        "Video Production",
-        "Digital Strategy",
-        "Project Management",
-        "Team Leadership",
-      ],
-      color: "accent-blue",
-    },
+
     {
       title: "Full Stack Developer Intern",
       company: "Unified Mentor Pvt. Ltd",
@@ -153,7 +133,7 @@ export default function Experience() {
   const stats = [
     {
       icon: Briefcase,
-      number: "4+",
+      number: "3+",
       label: "Professional Roles",
       color: "accent-purple",
     },
@@ -165,8 +145,8 @@ export default function Experience() {
     },
     {
       icon: TrendingUp,
-      number: "1M+",
-      label: "Social Reach",
+      number: "2+",
+      label: "Years Experience",
       color: "accent-pink",
     },
     {
@@ -386,6 +366,8 @@ export default function Experience() {
           </div>
         </div>
       </section>
+
+      <Footer />
     </div>
   );
 }

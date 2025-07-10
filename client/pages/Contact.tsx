@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from "react";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { Navigation } from "@/components/ui/navigation";
+import { Footer } from "@/components/ui/footer";
 import { Button } from "@/components/ui/button";
 import { ContactFormRequest, ContactFormResponse } from "@shared/api";
 import {
@@ -12,7 +13,6 @@ import {
   Github,
   Linkedin,
   Instagram,
-  Twitter,
   MessageCircle,
   Calendar,
   User,
@@ -133,28 +133,38 @@ export default function Contact() {
     setSubmitStatus({ type: null, message: "" });
 
     try {
-      const contactData: ContactFormRequest = {
-        name: formData.name,
-        email: formData.email,
-        message: `Subject: ${formData.subject}\n\nBudget: ${formData.budget}\nTimeline: ${formData.timeline}\n\nMessage:\n${formData.message}`,
-      };
+      // Create WhatsApp message
+      const whatsappMessage = `Hi Kaarthik! 👋
 
-      const response = await fetch("/api/contact", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(contactData),
+*New Project Inquiry*
+
+*Name:* ${formData.name}
+*Email:* ${formData.email}
+*Subject:* ${formData.subject}
+
+${formData.budget ? `*Budget:* ${formData.budget}` : ""}
+${formData.timeline ? `*Timeline:* ${formData.timeline}` : ""}
+
+*Message:*
+${formData.message}
+
+Looking forward to hearing from you!`;
+
+      // Encode the message for URL
+      const encodedMessage = encodeURIComponent(whatsappMessage);
+      const whatsappNumber = "917529834770"; // Your WhatsApp number
+      const whatsappURL = `https://wa.me/${whatsappNumber}?text=${encodedMessage}`;
+
+      // Open WhatsApp
+      window.open(whatsappURL, "_blank");
+
+      setSubmitStatus({
+        type: "success",
+        message: "Redirecting to WhatsApp... Your message is ready to send!",
       });
 
-      const result: ContactFormResponse = await response.json();
-
-      if (result.success) {
-        setSubmitStatus({
-          type: "success",
-          message:
-            "Thank you for your message! I'll get back to you within 24 hours.",
-        });
+      // Reset form after a delay
+      setTimeout(() => {
         setFormData({
           name: "",
           email: "",
@@ -163,28 +173,22 @@ export default function Contact() {
           budget: "",
           timeline: "",
         });
+        setSubmitStatus({ type: null, message: "" });
+      }, 3000);
 
-        // Success animation
-        gsap.to(".form-container", {
-          scale: 0.98,
-          duration: 0.3,
-          yoyo: true,
-          repeat: 1,
-          ease: "power2.inOut",
-        });
-      } else {
-        setSubmitStatus({
-          type: "error",
-          message:
-            result.message ||
-            "Something went wrong. Please try again or contact me directly.",
-        });
-      }
+      // Success animation
+      gsap.to(".form-container", {
+        scale: 0.98,
+        duration: 0.3,
+        yoyo: true,
+        repeat: 1,
+        ease: "power2.inOut",
+      });
     } catch (error) {
       setSubmitStatus({
         type: "error",
         message:
-          "Failed to send message. Please try again or contact me directly.",
+          "Something went wrong. Please try contacting me directly via WhatsApp.",
       });
     } finally {
       setIsSubmitting(false);
@@ -195,15 +199,15 @@ export default function Contact() {
     {
       icon: Mail,
       label: "Email",
-      value: "kaarthikdass@gmail.com",
-      link: "mailto:kaarthikdass@gmail.com",
+      value: "kartikdassarora@gmail.com",
+      link: "mailto:kartikdassarora@gmail.com",
       color: "accent-purple",
     },
     {
       icon: Phone,
-      label: "Phone",
-      value: "+91 (XXX) XXX-XXXX",
-      link: "tel:+91xxxxxxxxxx",
+      label: "Phone & WhatsApp",
+      value: "+91 7529834770",
+      link: "https://wa.me/917529834770",
       color: "accent-blue",
     },
     {
@@ -224,28 +228,16 @@ export default function Contact() {
 
   const socialLinks = [
     {
-      icon: Github,
-      label: "GitHub",
-      url: "https://github.com/kaarthikdass",
-      color: "accent-purple",
-    },
-    {
       icon: Linkedin,
       label: "LinkedIn",
-      url: "https://linkedin.com/in/kaarthikdass",
+      url: "https://www.linkedin.com/in/kaarthikdassarora/",
       color: "accent-blue",
     },
     {
       icon: Instagram,
       label: "Instagram",
-      url: "https://instagram.com/kaarthikdass",
+      url: "https://www.instagram.com/kaarthikarora/",
       color: "accent-pink",
-    },
-    {
-      icon: Twitter,
-      label: "Twitter",
-      url: "https://twitter.com/kaarthikdass",
-      color: "accent-orange",
     },
   ];
 
@@ -386,10 +378,10 @@ export default function Contact() {
                         className="w-full px-4 py-3 bg-surface-light/50 border border-accent-purple/20 rounded-xl focus:border-accent-purple/50 focus:ring-2 focus:ring-accent-purple/20 focus:outline-none transition-all duration-300 text-foreground"
                       >
                         <option value="">Select budget range</option>
-                        <option value="under-1k">Under $1,000</option>
-                        <option value="1k-5k">$1,000 - $5,000</option>
-                        <option value="5k-10k">$5,000 - $10,000</option>
-                        <option value="10k-plus">$10,000+</option>
+                        <option value="under-10k">Under ₹10,000</option>
+                        <option value="10k-50k">₹10,000 - ₹50,000</option>
+                        <option value="50k-100k">₹50,000 - ₹1,00,000</option>
+                        <option value="100k-plus">₹1,00,000+</option>
                         <option value="discuss">Let's discuss</option>
                       </select>
                     </div>
@@ -461,15 +453,18 @@ export default function Contact() {
                       {isSubmitting ? (
                         <>
                           <Loader2 size={20} className="mr-2 animate-spin" />
-                          Sending Message...
+                          Preparing WhatsApp...
                         </>
                       ) : (
                         <>
-                          <Send size={20} className="mr-2" />
-                          Send Message
+                          <MessageCircle size={20} className="mr-2" />
+                          Send via WhatsApp
                         </>
                       )}
                     </Button>
+                    <p className="text-center text-sm text-foreground/60 mt-2">
+                      📱 Opens WhatsApp with your message ready to send
+                    </p>
                   </div>
                 </form>
               </div>
@@ -549,6 +544,8 @@ export default function Contact() {
           </div>
         </div>
       </section>
+
+      <Footer />
     </div>
   );
 }

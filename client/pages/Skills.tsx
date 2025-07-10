@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from "react";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { Navigation } from "@/components/ui/navigation";
+import { Footer } from "@/components/ui/footer";
 import {
   Code,
   Database,
@@ -289,7 +290,7 @@ export default function Skills() {
         level: 85,
         experience: "1+ year",
         projects: "6+ projects",
-        icon: "📊",
+        icon: "���",
       },
       {
         name: "Algorithm Design",
@@ -678,6 +679,8 @@ export default function Skills() {
           </div>
         </div>
       </section>
+
+      <Footer />
     </div>
   );
 }

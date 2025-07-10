@@ -2,6 +2,8 @@ import { useEffect, useState } from "react";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { Navigation } from "@/components/ui/navigation";
+import { Footer } from "@/components/ui/footer";
+import { PaymentModal } from "@/components/PaymentModal";
 import {
   ExternalLink,
   Github,
@@ -18,6 +20,10 @@ import {
   Bot,
   Users,
   Filter,
+  Construction,
+  IndianRupee,
+  Crown,
+  CreditCard,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
@@ -25,43 +31,156 @@ gsap.registerPlugin(ScrollTrigger);
 
 export default function Projects() {
   const [filter, setFilter] = useState("all");
+  const [paymentModalOpen, setPaymentModalOpen] = useState(false);
+  const [selectedProject, setSelectedProject] = useState<any>(null);
 
   useEffect(() => {
-    // Animate project cards on scroll
-    gsap.fromTo(
-      ".project-card",
-      { opacity: 0, y: 60, scale: 0.9 },
-      {
-        opacity: 1,
-        y: 0,
-        scale: 1,
-        duration: 0.8,
-        ease: "power2.out",
-        stagger: 0.2,
-        scrollTrigger: {
-          trigger: ".projects-grid",
-          start: "top 80%",
-          toggleActions: "play none none reverse",
-        },
-      },
-    );
+    const ctx = gsap.context(() => {
+      // Spectacular hero entrance
+      const heroTl = gsap.timeline({ delay: 0.5 });
 
-    // Animate featured project
-    gsap.fromTo(
-      ".featured-project",
-      { opacity: 0, scale: 0.95 },
-      {
-        opacity: 1,
-        scale: 1,
-        duration: 1,
-        ease: "power2.out",
-        scrollTrigger: {
-          trigger: ".featured-project",
-          start: "top 85%",
-          toggleActions: "play none none reverse",
+      heroTl.fromTo(
+        ".projects-hero",
+        {
+          opacity: 0,
+          y: 100,
+          scale: 0.8,
+          rotateX: 45,
+          filter: "blur(20px)",
         },
-      },
-    );
+        {
+          opacity: 1,
+          y: 0,
+          scale: 1,
+          rotateX: 0,
+          filter: "blur(0px)",
+          duration: 1.2,
+          ease: "power3.out",
+          stagger: 0.2,
+        },
+      );
+
+      // Enhanced project cards with 3D morphing
+      gsap.fromTo(
+        ".project-card",
+        {
+          opacity: 0,
+          y: 120,
+          scale: 0.3,
+          rotateY: 45,
+          z: -200,
+          borderRadius: "50%",
+          filter: "blur(15px)",
+        },
+        {
+          opacity: 1,
+          y: 0,
+          scale: 1,
+          rotateY: 0,
+          z: 0,
+          borderRadius: "16px",
+          filter: "blur(0px)",
+          duration: 1.2,
+          ease: "elastic.out(1, 0.8)",
+          stagger: 0.15,
+          scrollTrigger: {
+            trigger: ".projects-grid",
+            start: "top 80%",
+            toggleActions: "play none none reverse",
+          },
+        },
+      );
+
+      // Featured project with spectacular entrance
+      gsap.fromTo(
+        ".featured-project",
+        {
+          opacity: 0,
+          scale: 0.5,
+          rotation: 10,
+          y: 100,
+          filter: "blur(20px)",
+        },
+        {
+          opacity: 1,
+          scale: 1,
+          rotation: 0,
+          y: 0,
+          filter: "blur(0px)",
+          duration: 1.5,
+          ease: "power3.out",
+          scrollTrigger: {
+            trigger: ".featured-project",
+            start: "top 85%",
+            toggleActions: "play none none reverse",
+          },
+        },
+      );
+
+      // Filter buttons with magnetic hover
+      gsap.fromTo(
+        ".filter-button",
+        {
+          opacity: 0,
+          scale: 0.5,
+          y: 30,
+        },
+        {
+          opacity: 1,
+          scale: 1,
+          y: 0,
+          duration: 0.6,
+          ease: "back.out(1.7)",
+          stagger: 0.1,
+          delay: 0.8,
+        },
+      );
+
+      // Floating animation for project icons
+      gsap.to(".project-icon", {
+        y: -10,
+        rotation: 5,
+        duration: 2,
+        ease: "sine.inOut",
+        repeat: -1,
+        yoyo: true,
+        stagger: 0.2,
+      });
+
+      // CTA section with pulsating glow
+      gsap.fromTo(
+        ".projects-cta",
+        {
+          opacity: 0,
+          scale: 0.8,
+          filter: "blur(10px)",
+        },
+        {
+          opacity: 1,
+          scale: 1,
+          filter: "blur(0px)",
+          duration: 1,
+          ease: "power2.out",
+          scrollTrigger: {
+            trigger: ".projects-cta",
+            start: "top 85%",
+            toggleActions: "play none none reverse",
+          },
+        },
+      );
+
+      // Continuous glow animation
+      gsap.to(".glow-element", {
+        boxShadow:
+          "0 0 30px rgba(124, 59, 237, 0.8), 0 0 60px rgba(238, 129, 238, 0.6)",
+        duration: 2,
+        ease: "sine.inOut",
+        repeat: -1,
+        yoyo: true,
+      });
+    });
+
+    return () => ctx.revert();
   }, []);
 
   const projects = [
@@ -105,23 +224,25 @@ export default function Projects() {
       color: "accent-blue",
     },
     {
-      title: "Binary Options Bot",
-      subtitle: "Automated trading system",
+      title: "Crypto Trading Bot",
+      subtitle: "Advanced cryptocurrency trading system",
       description:
-        "Advanced trading bot with real-time market analysis, risk management algorithms, and automated decision-making for binary options trading.",
+        "Professional cryptocurrency trading bot with machine learning algorithms, real-time market analysis, and automated portfolio management. Get full source code with secure payment.",
       image: "/api/placeholder/400/250",
       technologies: [
         "Python",
-        "TensorFlow",
-        "API Integration",
-        "Data Analysis",
-        "Algorithms",
+        "Machine Learning",
+        "Binance API",
+        "Real-time Analytics",
+        "Risk Management",
       ],
       category: "fintech",
       liveUrl: "#",
-      githubUrl: "#",
+      githubUrl: "https://github.com/KaarthikDassArora/CryptoTradingBot.git",
       icon: DollarSign,
       color: "accent-pink",
+      isPremium: true,
+      price: "₹10,000",
     },
     {
       title: "Facial Attendance System",
@@ -325,34 +446,39 @@ export default function Projects() {
 
       <section className="py-32 px-4">
         <div className="max-w-7xl mx-auto space-y-20">
-          {/* Header */}
-          <div className="text-center space-y-6">
-            <p className="text-accent-purple font-medium tracking-wide uppercase text-sm">
-              — Portfolio
-            </p>
-            <h1 className="text-4xl md:text-6xl font-bold gradient-text">
+          {/* Enhanced Header */}
+          <div className="projects-hero text-center space-y-6">
+            <div className="flex items-center justify-center space-x-2">
+              <Code size={16} className="text-accent-purple animate-pulse" />
+              <p className="text-accent-purple font-medium tracking-wide uppercase text-sm">
+                — Portfolio
+              </p>
+              <Code size={16} className="text-accent-purple animate-pulse" />
+            </div>
+            <h1 className="text-4xl md:text-6xl font-bold gradient-text relative">
               Things I've Built
+              <div className="absolute -inset-6 bg-gradient-to-r from-accent-purple/10 via-accent-pink/10 to-accent-blue/10 rounded-3xl blur-2xl -z-10 animate-pulse" />
             </h1>
-            <p className="text-xl text-foreground/70 max-w-3xl mx-auto">
+            <p className="text-xl text-foreground/70 max-w-3xl mx-auto leading-relaxed">
               From AI-powered applications to e-commerce platforms, here's a
-              showcase of my best work
+              showcase of my best work 🚀
             </p>
           </div>
 
-          {/* Category Filter */}
+          {/* Enhanced Category Filter */}
           <div className="flex flex-wrap justify-center gap-4">
             {categories.map((category) => (
               <Button
                 key={category.id}
                 onClick={() => setFilter(category.id)}
                 variant={filter === category.id ? "default" : "outline"}
-                className={`px-6 py-2 rounded-xl transition-all duration-300 ${
+                className={`filter-button px-6 py-2 rounded-xl transition-all duration-300 hover:scale-105 ${
                   filter === category.id
-                    ? "bg-gradient-to-r from-gradient-start to-gradient-middle text-white"
-                    : "border-accent-purple/30 text-foreground/70 hover:bg-accent-purple/10"
+                    ? "bg-gradient-to-r from-gradient-start to-gradient-middle text-white glow-element"
+                    : "border-accent-purple/30 text-foreground/70 hover:bg-accent-purple/10 hover:border-accent-purple/50"
                 }`}
               >
-                <Filter size={16} className="mr-2" />
+                <Filter size={16} className="mr-2 project-icon" />
                 {category.label} ({category.count})
               </Button>
             ))}
@@ -411,16 +537,24 @@ export default function Projects() {
 
                     {/* Action Buttons */}
                     <div className="flex flex-col sm:flex-row gap-4">
-                      <Button className="bg-gradient-to-r from-gradient-start to-gradient-middle text-white px-8 py-3 rounded-xl hover:scale-105 transition-all duration-300">
-                        <Play size={18} className="mr-2" />
-                        Live Demo
+                      <Button
+                        className="bg-gradient-to-r from-gradient-start to-gradient-middle text-white px-8 py-3 rounded-xl hover:scale-105 transition-all duration-300"
+                        onClick={() =>
+                          alert("Links are being updated, still constructing!")
+                        }
+                      >
+                        <Construction size={18} className="mr-2" />
+                        Links Coming Soon
                       </Button>
                       <Button
                         variant="outline"
                         className="border-accent-purple text-accent-purple hover:bg-accent-purple/10 px-8 py-3 rounded-xl hover:scale-105 transition-all duration-300"
+                        onClick={() =>
+                          alert("Links are being updated, still constructing!")
+                        }
                       >
-                        <Github size={18} className="mr-2" />
-                        View Code
+                        <Construction size={18} className="mr-2" />
+                        Under Construction
                       </Button>
                     </div>
                   </div>
@@ -468,29 +602,96 @@ export default function Projects() {
                       </div>
                       <div className="absolute inset-0 bg-gradient-to-t from-background/80 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
                       <div className="absolute bottom-4 right-4 flex space-x-2 opacity-0 group-hover:opacity-100 transition-opacity">
-                        <button className="p-2 bg-background/80 backdrop-blur-sm rounded-lg hover:bg-accent-purple/20 transition-colors">
-                          <ExternalLink
-                            size={16}
-                            className="text-accent-purple"
-                          />
-                        </button>
-                        <button className="p-2 bg-background/80 backdrop-blur-sm rounded-lg hover:bg-accent-blue/20 transition-colors">
-                          <Github size={16} className="text-accent-blue" />
-                        </button>
+                        {project.isPremium ? (
+                          <>
+                            <button
+                              className="p-2 bg-gradient-to-r from-green-500 to-green-600 backdrop-blur-sm rounded-lg hover:scale-110 transition-all"
+                              onClick={() => {
+                                setSelectedProject(project);
+                                setPaymentModalOpen(true);
+                              }}
+                              title="Buy Full Source Code - ₹10,000"
+                            >
+                              <CreditCard size={16} className="text-white" />
+                            </button>
+                            <button
+                              className="p-2 bg-background/80 backdrop-blur-sm rounded-lg hover:bg-accent-blue/20 transition-colors"
+                              onClick={() => {
+                                setSelectedProject(project);
+                                setPaymentModalOpen(true);
+                              }}
+                              title="View Source Code (Payment Required)"
+                            >
+                              <Github size={16} className="text-accent-blue" />
+                            </button>
+                          </>
+                        ) : (
+                          <>
+                            <button
+                              className="p-2 bg-background/80 backdrop-blur-sm rounded-lg hover:bg-accent-orange/20 transition-colors"
+                              onClick={() =>
+                                alert(
+                                  "Links are being updated, still constructing!",
+                                )
+                              }
+                            >
+                              <Construction
+                                size={16}
+                                className="text-accent-orange"
+                              />
+                            </button>
+                            <button
+                              className="p-2 bg-background/80 backdrop-blur-sm rounded-lg hover:bg-accent-blue/20 transition-colors"
+                              onClick={() =>
+                                alert(
+                                  "Links are being updated, still constructing!",
+                                )
+                              }
+                            >
+                              <Github size={16} className="text-accent-blue" />
+                            </button>
+                          </>
+                        )}
                       </div>
                     </div>
 
                     {/* Project Info */}
                     <div className="p-6 space-y-4">
                       <div>
-                        <h3
-                          className={`text-xl font-bold text-${project.color} mb-2`}
-                        >
-                          {project.title}
-                        </h3>
+                        <div className="flex items-center justify-between mb-2">
+                          <h3
+                            className={`text-xl font-bold text-${project.color}`}
+                          >
+                            {project.title}
+                          </h3>
+                          {project.isPremium && (
+                            <div className="flex items-center space-x-2">
+                              <span className="px-2 py-1 bg-gradient-to-r from-yellow-400 to-yellow-600 text-black text-xs font-bold rounded-full flex items-center space-x-1">
+                                <Crown size={12} />
+                                <span>PREMIUM</span>
+                              </span>
+                            </div>
+                          )}
+                        </div>
                         <p className="text-foreground/60 text-sm mb-3">
                           {project.subtitle}
                         </p>
+                        {project.isPremium && (
+                          <div className="mb-3 p-3 bg-gradient-to-r from-green-500/10 to-green-600/10 border border-green-500/20 rounded-lg">
+                            <div className="flex items-center justify-between">
+                              <span className="text-green-400 font-semibold text-sm">
+                                Full Source Code
+                              </span>
+                              <span className="text-green-400 font-bold text-lg flex items-center">
+                                <IndianRupee size={16} className="mr-1" />
+                                {project.price?.replace("₹", "")}
+                              </span>
+                            </div>
+                            <p className="text-green-300/80 text-xs mt-1">
+                              Includes documentation & support
+                            </p>
+                          </div>
+                        )}
                         <p className="text-foreground/80 text-sm leading-relaxed line-clamp-3">
                           {project.description}
                         </p>
@@ -531,21 +732,43 @@ export default function Projects() {
               projects and exploring cutting-edge technologies.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <Button className="bg-gradient-to-r from-gradient-start to-gradient-middle text-white px-8 py-3 rounded-xl hover:scale-105 transition-all duration-300">
-                <Github size={18} className="mr-2" />
-                Visit GitHub
+              <Button
+                className="bg-gradient-to-r from-gradient-start to-gradient-middle text-white px-8 py-3 rounded-xl hover:scale-105 transition-all duration-300"
+                onClick={() =>
+                  alert("Links are being updated, still constructing!")
+                }
+              >
+                <Construction size={18} className="mr-2" />
+                GitHub Links Coming Soon
               </Button>
               <Button
                 variant="outline"
                 className="border-accent-purple text-accent-purple hover:bg-accent-purple/10 px-8 py-3 rounded-xl hover:scale-105 transition-all duration-300"
+                onClick={() =>
+                  alert("Links are being updated, still constructing!")
+                }
               >
-                <ExternalLink size={18} className="mr-2" />
-                View Live Demos
+                <Construction size={18} className="mr-2" />
+                Live Demos Coming Soon
               </Button>
             </div>
           </div>
         </div>
       </section>
+
+      <Footer />
+
+      {/* Payment Modal */}
+      {selectedProject && (
+        <PaymentModal
+          isOpen={paymentModalOpen}
+          onClose={() => {
+            setPaymentModalOpen(false);
+            setSelectedProject(null);
+          }}
+          project={selectedProject}
+        />
+      )}
     </div>
   );
 }

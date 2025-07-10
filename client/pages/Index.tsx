@@ -21,6 +21,7 @@ import {
   Briefcase,
 } from "lucide-react";
 import { Navigation } from "@/components/ui/navigation";
+import { Footer } from "@/components/ui/footer";
 import { LoadingScreen } from "@/components/ui/loading-screen";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
@@ -41,24 +42,64 @@ export default function Index() {
   const startAnimations = () => {
     const tl = gsap.timeline({ delay: 0.3 });
 
-    // Hero animations
+    // Spectacular hero entrance with 3D transforms
     tl.fromTo(
       ".hero-content",
-      { opacity: 0, y: 50 },
-      { opacity: 1, y: 0, duration: 1, ease: "power2.out", stagger: 0.2 },
-    );
-
-    // Scroll-triggered animations
-    gsap.fromTo(
-      ".card-reveal",
-      { opacity: 0, y: 60, scale: 0.9 },
+      {
+        opacity: 0,
+        y: 100,
+        scale: 0.8,
+        rotateX: 45,
+        z: -200,
+        filter: "blur(20px)",
+      },
       {
         opacity: 1,
         y: 0,
         scale: 1,
-        duration: 0.8,
-        ease: "power2.out",
+        rotateX: 0,
+        z: 0,
+        filter: "blur(0px)",
+        duration: 1.5,
+        ease: "power3.out",
         stagger: 0.2,
+      },
+    );
+
+    // Floating animation for profile image
+    gsap.to(".profile-image", {
+      y: -15,
+      rotation: 2,
+      duration: 3,
+      ease: "sine.inOut",
+      repeat: -1,
+      yoyo: true,
+    });
+
+    // Magnetic hover effect for buttons
+    gsap.set(".magnetic-button", { transformOrigin: "center center" });
+
+    // Scroll-triggered animations with spectacular 3D effects
+    gsap.fromTo(
+      ".card-reveal",
+      {
+        opacity: 0,
+        y: 100,
+        scale: 0.5,
+        rotateY: 45,
+        z: -300,
+        filter: "blur(10px)",
+      },
+      {
+        opacity: 1,
+        y: 0,
+        scale: 1,
+        rotateY: 0,
+        z: 0,
+        filter: "blur(0px)",
+        duration: 1.2,
+        ease: "power3.out",
+        stagger: 0.15,
         scrollTrigger: {
           trigger: ".card-reveal",
           start: "top 80%",
@@ -67,16 +108,26 @@ export default function Index() {
       },
     );
 
-    // Services cards animation
+    // Enhanced services cards with morphing animation
     gsap.fromTo(
       ".service-card",
-      { opacity: 0, y: 40, rotateY: 15 },
+      {
+        opacity: 0,
+        scale: 0.3,
+        rotation: 180,
+        borderRadius: "50%",
+        y: 80,
+        filter: "blur(20px)",
+      },
       {
         opacity: 1,
+        scale: 1,
+        rotation: 0,
+        borderRadius: "16px",
         y: 0,
-        rotateY: 0,
-        duration: 0.6,
-        ease: "power2.out",
+        filter: "blur(0px)",
+        duration: 1,
+        ease: "elastic.out(1, 0.8)",
         stagger: 0.1,
         scrollTrigger: {
           trigger: ".service-card",
@@ -85,6 +136,56 @@ export default function Index() {
         },
       },
     );
+
+    // Continuous glow animation for special elements
+    gsap.to(".glow-pulse", {
+      boxShadow:
+        "0 0 30px rgba(124, 59, 237, 0.8), 0 0 60px rgba(238, 129, 238, 0.6)",
+      duration: 2,
+      ease: "sine.inOut",
+      repeat: -1,
+      yoyo: true,
+    });
+
+    // Text reveal animation with typewriter effect
+    gsap.fromTo(
+      ".text-reveal",
+      { width: 0, opacity: 0 },
+      {
+        width: "100%",
+        opacity: 1,
+        duration: 1.5,
+        ease: "power2.out",
+        scrollTrigger: {
+          trigger: ".text-reveal",
+          start: "top 90%",
+          toggleActions: "play none none reverse",
+        },
+      },
+    );
+
+    // Parallax effect for background elements
+    gsap.to(".parallax-slow", {
+      yPercent: -50,
+      ease: "none",
+      scrollTrigger: {
+        trigger: "body",
+        start: "top bottom",
+        end: "bottom top",
+        scrub: true,
+      },
+    });
+
+    gsap.to(".parallax-fast", {
+      yPercent: -100,
+      ease: "none",
+      scrollTrigger: {
+        trigger: "body",
+        start: "top bottom",
+        end: "bottom top",
+        scrub: true,
+      },
+    });
   };
 
   useEffect(() => {
@@ -165,28 +266,33 @@ export default function Index() {
                 </div>
               </div>
 
-              {/* CTA Buttons */}
+              {/* Enhanced CTA Buttons */}
               <div className="flex flex-col sm:flex-row gap-4">
                 <Link to="/projects">
                   <Button
                     size="lg"
-                    className="bg-gradient-to-r from-gradient-start to-gradient-middle hover:from-gradient-middle hover:to-gradient-end text-white px-8 py-4 text-lg font-semibold rounded-xl transition-all duration-300 hover:scale-105 group"
+                    className="magnetic-button bg-gradient-to-r from-gradient-start to-gradient-middle hover:from-gradient-middle hover:to-gradient-end text-white px-8 py-4 text-lg font-semibold rounded-xl transition-all duration-300 hover:scale-105 group glow-pulse relative overflow-hidden"
                   >
+                    <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent -skew-x-12 -translate-x-full group-hover:translate-x-full transition-transform duration-700" />
                     <ArrowRight
                       size={20}
-                      className="mr-2 group-hover:translate-x-1 transition-transform"
+                      className="mr-2 group-hover:translate-x-1 transition-transform relative z-10"
                     />
-                    Explore My Work
+                    <span className="relative z-10">Explore My Work</span>
                   </Button>
                 </Link>
                 <Link to="/contact">
                   <Button
                     variant="outline"
                     size="lg"
-                    className="border-2 border-accent-purple text-accent-purple hover:bg-accent-purple/10 px-8 py-4 text-lg font-semibold rounded-xl transition-all duration-300 hover:scale-105"
+                    className="magnetic-button border-2 border-accent-purple text-accent-purple hover:bg-accent-purple/10 px-8 py-4 text-lg font-semibold rounded-xl transition-all duration-300 hover:scale-105 group relative overflow-hidden"
                   >
-                    <Mail size={20} className="mr-2" />
-                    Let's Collaborate
+                    <div className="absolute inset-0 bg-gradient-to-r from-transparent via-accent-purple/20 to-transparent -skew-x-12 -translate-x-full group-hover:translate-x-full transition-transform duration-700" />
+                    <Mail
+                      size={20}
+                      className="mr-2 group-hover:rotate-12 transition-transform relative z-10"
+                    />
+                    <span className="relative z-10">Let's Collaborate</span>
                   </Button>
                 </Link>
               </div>
@@ -194,18 +300,7 @@ export default function Index() {
               {/* Social Links */}
               <div className="flex space-x-4">
                 <a
-                  href="https://github.com/kaarthikdass"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="p-3 bg-surface-light/50 backdrop-blur-sm rounded-xl border border-accent-purple/20 hover:border-accent-purple/40 hover:bg-accent-purple/10 transition-all duration-300 hover:scale-110"
-                >
-                  <Github
-                    size={20}
-                    className="text-foreground/70 hover:text-accent-purple"
-                  />
-                </a>
-                <a
-                  href="https://linkedin.com/in/kaarthikdass"
+                  href="https://www.linkedin.com/in/kaarthikdassarora/"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="p-3 bg-surface-light/50 backdrop-blur-sm rounded-xl border border-accent-blue/20 hover:border-accent-blue/40 hover:bg-accent-blue/10 transition-all duration-300 hover:scale-110"
@@ -216,7 +311,7 @@ export default function Index() {
                   />
                 </a>
                 <a
-                  href="https://instagram.com/kaarthikdass"
+                  href="https://www.instagram.com/kaarthikarora/"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="p-3 bg-surface-light/50 backdrop-blur-sm rounded-xl border border-accent-pink/20 hover:border-accent-pink/40 hover:bg-accent-pink/10 transition-all duration-300 hover:scale-110"
@@ -232,23 +327,36 @@ export default function Index() {
 
           {/* Right Content - Profile Image */}
           <div className="hero-content flex justify-center lg:justify-end">
-            <div className="relative">
-              <div className="w-80 h-80 lg:w-96 lg:h-96 rounded-3xl overflow-hidden border-4 border-gradient-to-r from-gradient-start to-gradient-end shadow-2xl">
+            <div className="relative profile-image">
+              <div className="w-80 h-80 lg:w-96 lg:h-96 rounded-3xl overflow-hidden border-4 border-gradient-to-r from-gradient-start to-gradient-end shadow-2xl glow-pulse">
                 <img
                   src="https://cdn.builder.io/api/v1/image/assets%2F01d7d241c1954334a3f0d0e345e8ae28%2F2358ed438af1495ab12823ffe0eb3114?format=webp&width=800"
                   alt="Kaarthik Dass Arora"
-                  className="w-full h-full object-cover hover:scale-110 transition-all duration-500"
+                  className="w-full h-full object-cover hover:scale-110 transition-all duration-500 filter grayscale hover:grayscale-0"
                 />
               </div>
-              {/* Floating elements around image */}
-              <div className="absolute -top-6 -right-6 w-12 h-12 bg-accent-purple/20 rounded-2xl flex items-center justify-center backdrop-blur-sm border border-accent-purple/30">
+              {/* Enhanced floating elements around image */}
+              <div className="absolute -top-6 -right-6 w-12 h-12 bg-accent-purple/20 rounded-2xl flex items-center justify-center backdrop-blur-sm border border-accent-purple/30 parallax-slow animate-float">
                 <Code size={24} className="text-accent-purple" />
               </div>
-              <div className="absolute -bottom-6 -left-6 w-12 h-12 bg-accent-blue/20 rounded-2xl flex items-center justify-center backdrop-blur-sm border border-accent-blue/30">
+              <div
+                className="absolute -bottom-6 -left-6 w-12 h-12 bg-accent-blue/20 rounded-2xl flex items-center justify-center backdrop-blur-sm border border-accent-blue/30 parallax-fast animate-float"
+                style={{ animationDelay: "1s" }}
+              >
                 <Brain size={24} className="text-accent-blue" />
               </div>
-              <div className="absolute top-1/2 -right-8 w-10 h-10 bg-accent-pink/20 rounded-xl flex items-center justify-center backdrop-blur-sm border border-accent-pink/30">
+              <div
+                className="absolute top-1/2 -right-8 w-10 h-10 bg-accent-pink/20 rounded-xl flex items-center justify-center backdrop-blur-sm border border-accent-pink/30 parallax-slow animate-float"
+                style={{ animationDelay: "2s" }}
+              >
                 <Palette size={20} className="text-accent-pink" />
+              </div>
+              {/* Additional floating elements */}
+              <div
+                className="absolute top-10 -left-8 w-8 h-8 bg-accent-orange/20 rounded-lg flex items-center justify-center backdrop-blur-sm border border-accent-orange/30 parallax-fast animate-float"
+                style={{ animationDelay: "0.5s" }}
+              >
+                <Sparkles size={16} className="text-accent-orange" />
               </div>
             </div>
           </div>
@@ -479,6 +587,8 @@ export default function Index() {
           </div>
         </div>
       </section>
+
+      <Footer />
     </div>
   );
 }

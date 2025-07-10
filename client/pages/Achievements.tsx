@@ -2,6 +2,7 @@ import { useEffect, useRef } from "react";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { Navigation } from "@/components/ui/navigation";
+import { Footer } from "@/components/ui/footer";
 import {
   Trophy,
   Users,
@@ -93,16 +94,7 @@ export default function Achievements() {
       impact: "50+ Clients Served",
       color: "accent-purple",
     },
-    {
-      title: "Co-founded Chitrakala Studios",
-      description:
-        "Established a multimedia production company focusing on creative content and digital services, expanding business portfolio.",
-      icon: Video,
-      year: "2023",
-      category: "Business",
-      impact: "Multimedia Production",
-      color: "accent-blue",
-    },
+
     {
       title: "Built Accessibility-First Applications",
       description:
@@ -123,16 +115,7 @@ export default function Achievements() {
       impact: "15+ AI Projects",
       color: "accent-orange",
     },
-    {
-      title: "Viral Content Creation",
-      description:
-        "Generated viral social media content and reels that reached millions of users, establishing strong digital presence.",
-      icon: Flame,
-      year: "2023-2024",
-      category: "Content",
-      impact: "1M+ Total Reach",
-      color: "accent-purple",
-    },
+
     {
       title: "Full-Stack Development Mastery",
       description:
@@ -142,37 +125,6 @@ export default function Achievements() {
       category: "Technical",
       impact: "Multiple Tech Stacks",
       color: "accent-blue",
-    },
-  ];
-
-  const contentAchievements = [
-    {
-      title: "Pratibimb Reels Success",
-      description: "Created engaging reels for Pratibimb Designs brand",
-      metrics: "500K+ Views",
-      icon: Video,
-      color: "accent-purple",
-    },
-    {
-      title: "Social Media Growth",
-      description: "Built strong personal and brand social media presence",
-      metrics: "10K+ Followers",
-      icon: Users,
-      color: "accent-blue",
-    },
-    {
-      title: "Brand Recognition",
-      description: "Established Pratibimb as a recognized design brand",
-      metrics: "50+ Brand Projects",
-      icon: Award,
-      color: "accent-pink",
-    },
-    {
-      title: "Content Engagement",
-      description: "Achieved high engagement rates across platforms",
-      metrics: "25% Avg Engagement",
-      icon: TrendingUp,
-      color: "accent-orange",
     },
   ];
 
@@ -191,13 +143,7 @@ export default function Achievements() {
       icon: Trophy,
       color: "accent-blue",
     },
-    {
-      year: "2023",
-      title: "Co-founded Chitrakala",
-      description: "Expanded into multimedia production and content creation",
-      icon: Camera,
-      color: "accent-pink",
-    },
+
     {
       year: "2024",
       title: "AI Specialization",
@@ -205,13 +151,7 @@ export default function Achievements() {
       icon: Lightbulb,
       color: "accent-orange",
     },
-    {
-      year: "2024",
-      title: "Viral Content Success",
-      description: "Achieved 1M+ combined reach across social platforms",
-      icon: Share2,
-      color: "accent-purple",
-    },
+
     {
       year: "2025",
       title: "Professional Growth",
@@ -225,10 +165,10 @@ export default function Achievements() {
   const stats = [
     { label: "Projects Completed", value: "15+", icon: Trophy },
     { label: "Clients Served", value: "50+", icon: Users },
-    { label: "Social Media Reach", value: "1M+", icon: TrendingUp },
+    { label: "Client Satisfaction", value: "98%", icon: TrendingUp },
     { label: "Years Experience", value: "2+", icon: Award },
     { label: "Technologies Mastered", value: "20+", icon: Zap },
-    { label: "Business Ventures", value: "2", icon: Crown },
+    { label: "Business Ventures", value: "1", icon: Crown },
   ];
 
   return (
@@ -338,49 +278,6 @@ export default function Achievements() {
                         <BarChart3 size={16} />
                         <span className="text-sm">Impact</span>
                       </div>
-                    </div>
-                  </div>
-                );
-              })}
-            </div>
-          </div>
-
-          {/* Content Creation Achievements */}
-          <div>
-            <div className="text-center mb-16">
-              <h2 className="text-3xl md:text-4xl font-bold gradient-text mb-4">
-                Content & Social Media
-              </h2>
-              <p className="text-lg text-foreground/70">
-                Building digital presence and creating engaging content
-              </p>
-            </div>
-
-            <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
-              {contentAchievements.map((achievement, index) => {
-                const Icon = achievement.icon;
-                return (
-                  <div
-                    key={index}
-                    className="achievement-card glass rounded-2xl p-6 text-center hover:scale-105 transition-all duration-300"
-                  >
-                    <div
-                      className={`w-16 h-16 bg-${achievement.color}/20 rounded-2xl flex items-center justify-center mx-auto mb-6`}
-                    >
-                      <Icon size={32} className={`text-${achievement.color}`} />
-                    </div>
-                    <h3
-                      className={`text-lg font-bold text-${achievement.color} mb-3`}
-                    >
-                      {achievement.title}
-                    </h3>
-                    <p className="text-foreground/70 text-sm mb-4 leading-relaxed">
-                      {achievement.description}
-                    </p>
-                    <div
-                      className={`inline-block px-4 py-2 bg-${achievement.color}/10 text-${achievement.color} rounded-lg text-sm font-semibold`}
-                    >
-                      {achievement.metrics}
                     </div>
                   </div>
                 );
@@ -517,6 +414,8 @@ export default function Achievements() {
           </div>
         </div>
       </section>
+
+      <Footer />
     </div>
   );
 }
